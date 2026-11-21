@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class ConsultorioService {
@@ -71,8 +72,14 @@ public class ConsultorioService {
     }
 
     public synchronized void iniciarAtendimento(Consultorio c, Paciente paciente) {
+
+        LocalDateTime inicio = LocalDateTime.now();
+
+        long duracao = ThreadLocalRandom.current().nextLong(15, 40);
+
         c.setPacienteAtual(paciente);
-        c.setInicioAtendimento(LocalDateTime.now());
+        c.setInicioAtendimento(inicio);
+        c.setFimPrevisto(inicio.plusSeconds(duracao));
     }
 
     public synchronized SessaoEncerrada encerrarAtendimento(int numero) {
@@ -83,6 +90,7 @@ public class ConsultorioService {
         SessaoEncerrada sessao = new SessaoEncerrada(c.getPacienteAtual(), c.getNumero(), c.getInicioAtendimento());
         c.setPacienteAtual(null);
         c.setInicioAtendimento(null);
+        c.setFimPrevisto(null);
         if (c.isAberto()) {
             colocarNaFila(c);
         } else {
