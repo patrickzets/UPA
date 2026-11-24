@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
-  Agendamento, Atendimento, Configuracao, Consultorio, EstadoFila, FilaCircular,
+  Agendamento, Atendimento, Chamada, Configuracao, Consultorio, EstadoFila, FilaCircular,
   Operacao, Paciente, Sintoma
 } from './modelos';
 
@@ -38,6 +38,10 @@ export class UpaService {
 
   estadoFila(): Observable<EstadoFila> {
     return this.http.get<EstadoFila>(`${this.api}/fila`);
+  }
+
+  chamadas(): Observable<Chamada[]> {
+    return this.http.get<Chamada[]>(`${this.api}/fila/chamadas`);
   }
 
   chamar() {

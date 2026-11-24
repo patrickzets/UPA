@@ -4,11 +4,13 @@ import { PacientesComponent } from './paginas/pacientes.component';
 import { AgendaComponent } from './paginas/agenda.component';
 import { HistoricoComponent } from './paginas/historico.component';
 import { ConfiguracoesComponent } from './paginas/configuracoes.component';
+import { TelaoComponent } from './paginas/telao.component';
 
 export const routes: Routes = [
   { path: '', component: PainelComponent },
   { path: 'pacientes', component: PacientesComponent },
   { path: 'agenda', component: AgendaComponent },
   { path: 'historico', component: HistoricoComponent },
-  { path: 'configuracoes', component: ConfiguracoesComponent }
+  { path: 'configuracoes', component: ConfiguracoesComponent },
+  { path: 'telao', component: TelaoComponent }
 ];

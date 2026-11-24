@@ -61,6 +61,8 @@ npm start
 
 Abre em `http://localhost:4200` e fala com a API na porta 8080.
 
+O painel do operador fica em `/` e o telão da sala de espera em `/telao` (botão "Abrir telão" no topo). O telão mostra a chamada atual com nome e senha, as chamadas anteriores e a situação dos consultórios. Quando dois consultórios liberam juntos, cada chamada fica pelo menos 8 segundos na tela antes da próxima.
+
 ## Como o atendimento funciona
 
 1. O paciente é cadastrado (CPF, nome, idade, solicitação).
@@ -86,6 +88,7 @@ Na tela de configurações dá para ligar ou desligar o fechamento aleatório, d
 | POST | `/api/fila/triar` | passa o primeiro da recepção para a fila de prioridade |
 | GET | `/api/fila` | recepção, aguardando e em atendimento |
 | GET | `/api/fila/proximo` | próximo a ser chamado |
+| GET | `/api/fila/chamadas` | últimas chamadas (usado pelo telão) |
 | POST | `/api/fila/chamar` | chama o próximo para um consultório |
 | POST | `/api/fila/concluir/{consultorio}` | conclui o atendimento |
 | GET | `/api/consultorios` | situação dos consultórios |
