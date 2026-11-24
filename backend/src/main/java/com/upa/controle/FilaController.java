@@ -1,6 +1,7 @@
 package com.upa.controle;
 
 import com.upa.dto.ChamadaDto;
+import com.upa.dto.ChamadaRegistradaDto;
 import com.upa.dto.ChegadaRequest;
 import com.upa.dto.EstadoFilaDto;
 import com.upa.modelo.Atendimento;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -34,6 +36,11 @@ public class FilaController {
     @GetMapping("/proximo")
     public Paciente proximo() {
         return service.consultarProximo();
+    }
+
+    @GetMapping("/chamadas")
+    public List<ChamadaRegistradaDto> chamadas() {
+        return service.ultimasChamadas();
     }
 
     @PostMapping("/chegada")

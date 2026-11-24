@@ -15,6 +15,7 @@ public class Paciente {
     private int pontuacao;
     private List<String> sintomas = new ArrayList<>();
     private LocalDateTime chegadaEm;
+    private String senha;
 
     public Paciente(String cpf, String nome, int idade, String descricao) {
         this.cpf = cpf;
@@ -77,6 +78,14 @@ public class Paciente {
 
     public void setChegadaEm(LocalDateTime chegadaEm) {
         this.chegadaEm = chegadaEm;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     @Override

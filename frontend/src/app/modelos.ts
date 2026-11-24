@@ -1,14 +1,18 @@
 export type Cor = 'VERMELHO' | 'AMARELO' | 'VERDE';
 
+export type StatusPaciente = 'CADASTRADO' | 'NA_RECEPCAO' | 'AGUARDANDO' | 'EM_ATENDIMENTO' | 'ATENDIDO';
+
 export interface Paciente {
   cpf: string;
   nome: string;
   idade: number;
   descricao: string;
-  status: string;
+  status: StatusPaciente;
   cor: Cor | null;
   pontuacao: number;
   sintomas: string[];
+  chegadaEm: string | null;
+  senha: string | null;
 }
 
 export interface Sintoma {
@@ -23,7 +27,13 @@ export interface Consultorio {
   ocupado: boolean;
   naFila: boolean;
   paciente: string | null;
+  cpfPaciente: string | null;
+  inicioAtendimento: string | null;
   reabreEmSegundos: number | null;
+  cor: Cor | null;
+  senha: string | null;
+  duracaoSegundos: number | null;
+  restamSegundos: number | null;
 }
 
 export interface EstadoFila {
@@ -39,6 +49,15 @@ export interface FilaCircular {
   fim: number;
   tamanho: number;
   capacidade: number;
+}
+
+export interface Chamada {
+  id: number;
+  nome: string;
+  senha: string;
+  cor: Cor;
+  consultorio: number;
+  hora: string;
 }
 
 export interface Agendamento {

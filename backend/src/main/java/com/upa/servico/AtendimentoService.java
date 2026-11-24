@@ -1,6 +1,7 @@
 package com.upa.servico;
 
 import com.upa.dto.ChamadaDto;
+import com.upa.dto.ChamadaRegistradaDto;
 import com.upa.dto.ChegadaRequest;
 import com.upa.dto.EstadoFilaDto;
 import com.upa.estruturas.Fila;
@@ -28,6 +29,10 @@ public class AtendimentoService {
     private final SintomaService sintomaService;
     private final ConsultorioService consultorioService;
     private final HistoricoService historicoService;
+    private final List<ChamadaRegistradaDto> chamadas = new ArrayList<>();
+    private int contadorSenha = 0;
+    private int contadorChamada = 0;
+    private static final int CHAMADAS_GUARDADAS = 10;
 
     public AtendimentoService(PacienteService pacienteService, SintomaService sintomaService,
                               ConsultorioService consultorioService, HistoricoService historicoService) {
@@ -63,6 +68,7 @@ public class AtendimentoService {
         paciente.setPontuacao(pontos);
         paciente.setSintomas(nomes);
         paciente.setChegadaEm(LocalDateTime.now());
+        paciente.setSenha(String.format("U%03d", ++contadorSenha));
         paciente.setStatus(StatusPaciente.NA_RECEPCAO);
         recepcao.enqueue(paciente);
         return paciente;
@@ -105,7 +111,16 @@ public class AtendimentoService {
         }
         paciente.setStatus(StatusPaciente.EM_ATENDIMENTO);
         consultorioService.iniciarAtendimento(consultorio, paciente);
+        chamadas.add(0, new ChamadaRegistradaDto(++contadorChamada, paciente.getNome(), paciente.getSenha(),
+                paciente.getCor(), consultorio.getNumero(), LocalDateTime.now()));
+        if (chamadas.size() > CHAMADAS_GUARDADAS) {
+            chamadas.remove(chamadas.size() - 1);
+        }
         return new ChamadaDto(paciente, consultorio.getNumero());
+    }
+
+    public synchronized List<ChamadaRegistradaDto> ultimasChamadas() {
+        return new ArrayList<>(chamadas);
     }
 
     public synchronized Atendimento concluir(int numeroConsultorio) {
