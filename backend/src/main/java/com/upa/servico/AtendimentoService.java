@@ -116,12 +116,44 @@ public class AtendimentoService {
 
     public synchronized EstadoFilaDto estado() {
         List<Paciente> emAtendimento = new ArrayList<>();
+
         for (Consultorio c : consultorioService.listar()) {
             if (c.isOcupado()) {
                 emAtendimento.add(c.getPacienteAtual());
             }
         }
+
         Paciente proximo = aguardando.isEmpty() ? null : aguardando.proximo();
-        return new EstadoFilaDto(recepcao.percorrer(), aguardando.emOrdemDeAtendimento(), proximo, emAtendimento);
+
+        return new EstadoFilaDto(
+                recepcao.percorrer(),
+                aguardando.emOrdemDeAtendimento(),
+                proximo,
+                emAtendimento
+        );
+    }
+
+    public synchronized void processarAtendimentosAutomaticos() {
+
+        LocalDateTime agora = LocalDateTime.now();
+
+        // Verifica quais atendimentos já terminaram
+        for (Consultorio c : consultorioService.listar()) {
+
+            if (c.isOcupado()
+                    && c.getFimPrevisto() != null
+                    && !agora.isBefore(c.getFimPrevisto())) {
+
+                concluir(c.getNumero());
+            }
+        }
+
+        // Chama pacientes enquanto houver consultórios livres
+        // e pacientes aguardando atendimento
+        while (!aguardando.isEmpty()
+                && consultorioService.temConsultorioDisponivel()) {
+
+            chamarProximo();
+        }
     }
 }

@@ -11,6 +11,7 @@ public class Consultorio {
     private Paciente pacienteAtual;
     private LocalDateTime inicioAtendimento;
     private Instant reabreEm;
+    private LocalDateTime fimPrevisto;
 
     public Consultorio(int numero) {
         this.numero = numero;
@@ -63,4 +64,8 @@ public class Consultorio {
     public boolean isOcupado() {
         return pacienteAtual != null;
     }
+
+    public LocalDateTime getFimPrevisto() { return fimPrevisto; }
+
+    public void setFimPrevisto(LocalDateTime fimPrevisto) { this.fimPrevisto = fimPrevisto; }
 }
